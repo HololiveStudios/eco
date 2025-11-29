@@ -22,3 +22,15 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# .gitignore - ATUALIZADO
+node_modules/
+dist/
+.astro/
+.env
+.env.local
+.DS_Store
+*.log
+.wrangler/
+wrangler.toml
+.dev.vars

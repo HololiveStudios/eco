@@ -1,0 +1,98 @@
+---
+// src/pages/minha-conta.astro - NOVO
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Minha Conta">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Minha Conta</h1>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <aside class="bg-white p-6 rounded-lg shadow-sm h-fit">
+        <nav class="space-y-2">
+          <a href="#pedidos" class="block px-4 py-2 rounded hover:bg-gray-100 font-semibold text-primary">
+            Meus Pedidos
+          </a>
+          <a href="#dados" class="block px-4 py-2 rounded hover:bg-gray-100">
+            Meus Dados
+          </a>
+          <a href="#enderecos" class="block px-4 py-2 rounded hover:bg-gray-100">
+            Endereços
+          </a>
+          <a href="#favoritos" class="block px-4 py-2 rounded hover:bg-gray-100">
+            Favoritos
+          </a>
+        </nav>
+      </aside>
+
+      <div class="lg:col-span-3 space-y-6">
+        <section id="pedidos" class="bg-white p-6 rounded-lg shadow-sm">
+          <h2 class="text-2xl font-bold mb-4">Meus Pedidos</h2>
+          <div id="orders-list" class="space-y-4">
+            <p class="text-gray-600">Nenhum pedido encontrado</p>
+          </div>
+        </section>
+
+        <section id="dados" class="bg-white p-6 rounded-lg shadow-sm">
+          <h2 class="text-2xl font-bold mb-4">Meus Dados</h2>
+          <form class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-2">Nome Completo</label>
+                <input type="text" class="w-full px-4 py-2 border rounded-lg" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">CPF</label>
+                <input type="text" class="w-full px-4 py-2 border rounded-lg" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">E-mail</label>
+                <input type="email" class="w-full px-4 py-2 border rounded-lg" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Telefone</label>
+                <input type="tel" class="w-full px-4 py-2 border rounded-lg" />
+              </div>
+            </div>
+            <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg">
+              Salvar Alterações
+            </button>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { getAllOrders } from '../stores/orders';
+    import { formatPrice, formatDate } from '../lib/format';
+
+    const orders = getAllOrders();
+    const ordersList = document.getElementById('orders-list');
+
+    if (ordersList && orders.length > 0) {
+      ordersList.innerHTML = orders.map(order => `
+        <div class="border rounded-lg p-4">
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <p class="font-semibold">${order.id}</p>
+              <p class="text-sm text-gray-600">${formatDate(order.createdAt)}</p>
+            </div>
+            <span class="px-3 py-1 rounded text-sm ${
+              order.status === 'delivered' ? 'bg-green-100 text-green-800' :
+              order.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
+              order.status === 'paid' ? 'bg-yellow-100 text-yellow-800' :
+              'bg-gray-100 text-gray-800'
+            }">
+              ${order.status}
+            </span>
+          </div>
+          <p class="text-lg font-bold text-primary">${formatPrice(order.total)}</p>
+          <a href="/pedido/${order.id}" class="text-primary hover:underline text-sm mt-2 inline-block">
+            Ver Detalhes
+          </a>
+        </div>
+      `).join('');
+    }
+  </script>
+</Layout>

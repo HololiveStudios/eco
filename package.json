@@ -1,14 +1,23 @@
 {
   "name": "ecommerce-base",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "deploy": "wrangler pages deploy dist",
+    "db:init": "wrangler d1 execute ecommerce_db --file=./schema.sql",
+    "db:migrations": "wrangler d1 migrations apply ecommerce_db"
   },
   "dependencies": {
-    "astro": "^5.16.2"
+    "astro": "^5.0.0",
+    "@astrojs/solid-js": "^4.0.0",
+    "solid-js": "^1.9.3",
+    "@solidjs/router": "^0.15.3",
+    "nanostores": "^0.11.3",
+    "@nanostores/persistent": "^0.10.0",
+    "@nanostores/solid": "^0.4.2",
+    "tailwindcss": "^3.4.17"
   }
 }

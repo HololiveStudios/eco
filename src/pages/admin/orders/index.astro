@@ -1,0 +1,71 @@
+---
+// src/pages/admin/
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { getAllOrders } from '../../../stores/orders';
+import { formatPrice, formatDate } from '../../../lib/format';
+const orders = getAllOrders();
+<AdminLayout title="Pedidos">
+  <div class="mb-6">
+    <div class="flex gap-4">
+      <button class="px-4 py-2 bg-primary text-white rounded-lg">Todos</button>
+      <button class="px-4 py-2 bg-gray-200 rounded-lg">Pendentes</button>
+      <button class="px-4 py-2 bg-gray-200 rounded-lg">Pagos</button>
+      <button class="px-4 py-2 bg-gray-200 rounded-lg">Enviados</button>
+      <button class="px-4 py-2 bg-gray-200 rounded-lg">Entregues</button>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+    <table class="w-full">
+      <thead class="bg-gray-50 border-b">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y">
+        {orders.map(order => (
+          <tr>
+            <td class="px-6 py-4 font-mono text-sm">{order.id}</td>
+            <td class="px-6 py-4">
+              <div>
+                <p class="font-medium">{order.customer.name}</p>
+                <p class="text-sm text-gray-600">{order.customer.email}</p>
+              </div>
+            </td>
+            <td class="px-6 py-4 text-gray-600">{formatDate(order.createdAt)}</td>
+            <td class="px-6 py-4 font-semibold">{formatPrice(order.total)}</td>
+            <td class="px-6 py-4">
+              <select class="order-status px-3 py-1 rounded border text-sm" data-order-id={order.id}>
+                <option value="pending" selected={order.status === 'pending'}>Pendente</option>
+                <option value="paid" selected={order.status === 'paid'}>Pago</option>
+                <option value="shipped" selected={order.status === 'shipped'}>Enviado</option>
+                <option value="delivered" selected={order.status === 'delivered'}>Entregue</option>
+              </select>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <a href={`/admin/orders/${order.id}`} class="text-primary hover:underline">Ver Detalhes</a>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <script>
+    import { updateOrderStatus } from '../../../stores/orders';
+
+    document.querySelectorAll('.order-status').forEach(select => {
+      select.addEventListener('change', (e) => {
+        const target = e.target as HTMLSelectElement;
+        const orderId = target.dataset.orderId!;
+        const status = target.value as any;
+        
+        updateOrderStatus(orderId, status);
+        alert('Status atualizado com sucesso!');
+      });
+    });
+  </script>
+</AdminLayout>

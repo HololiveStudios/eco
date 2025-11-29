@@ -1,0 +1,53 @@
+---
+// src/pages/admin/categories/index.astro
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+---
+<AdminLayout title="Categorias">
+  <div class="mb-6 flex justify-between items-center">
+    <h2 class="text-2xl font-bold">Gerenciar Categorias</h2>
+    <button
+      id="new-category-btn"
+      class="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary/90"
+    >
+      + Nova Categoria
+    </button>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="categories-grid">
+  </div>
+  <div id="category-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md">
+      <h3 class="text-xl font-bold mb-4">Nova Categoria</h3>
+      <form id="category-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Nome</label>
+          <input
+            type="text"
+            name="name"
+            required
+            class="w-full px-4 py-2 border rounded-lg"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Descrição</label>
+          <textarea
+            name="description"
+            rows="3"
+            class="w-full px-4 py-2 border rounded-lg"
+          ></textarea>
+        </div>
+        <div class="flex gap-4">
+          <button type="submit" class="flex-1 bg-primary text-white py-2 rounded-lg">Salvar</button>
+          <button type="button" id="cancel-btn" class="flex-1 bg-gray-200 py-2 rounded-lg">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    const modal = document.getElementById('category-modal');
+    const newBtn = document.getElementById('new-category-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+
+    newBtn?.addEventListener('click', () => modal?.classList.remove('hidden'));
+    cancelBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+  </script>
+</AdminLayout>

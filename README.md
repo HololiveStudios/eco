@@ -1,43 +1,142 @@
-# Astro Starter Kit: Minimal
+# README.md - ATUALIZADO COM DOCUMENTAÇÃO COMPLETA
 
-```sh
-npm create astro@latest -- --template minimal
+# E-commerce Base - Astro + SolidJS + Cloudflare
+
+E-commerce completo e escalável construído com as melhores tecnologias do mercado.
+
+## 🚀 Tecnologias
+
+- **Astro** - Framework web ultrarrápido
+- **SolidJS** - UI reativa e performática
+- **Cloudflare Pages** - Hospedagem edge
+- **Cloudflare D1** - Banco de dados SQL serverless
+- **Cloudflare KV** - Cache distribuído
+- **Cloudflare R2** - Armazenamento de objetos
+- **Cloudflare Images** - Otimização de imagens
+- **TailwindCSS** - Estilização
+
+## 📦 Funcionalidades
+
+### Front-end
+- ✅ Catálogo de produtos com filtros
+- ✅ Carrinho de compras persistente
+- ✅ Sistema de favoritos (wishlist)
+- ✅ Checkout completo
+- ✅ Cálculo de frete
+- ✅ Aplicação de cupons de desconto
+- ✅ Sistema de avaliações
+- ✅ Busca de produtos
+- ✅ Categorias
+- ✅ Página de produto com detalhes
+- ✅ Integração WhatsApp
+- ✅ Responsivo mobile-first
+
+### Admin
+- ✅ Dashboard com estatísticas
+- ✅ Gestão de produtos (CRUD)
+- ✅ Gestão de pedidos
+- ✅ Gestão de categorias
+- ✅ Gestão de cupons
+- ✅ Upload de imagens
+- ✅ Relatórios
+- ✅ Configurações da loja
+
+### Backend
+- ✅ API REST completa
+- ✅ Banco de dados SQL (D1)
+- ✅ Cache distribuído (KV)
+- ✅ Armazenamento de imagens (R2)
+- ✅ Processamento de pagamentos
+- ✅ Envio de emails
+- ✅ Analytics
+
+## 🛠️ Instalação
+```bash
+# Clone o repositório
+git clone <repo-url>
+
+# Instale as dependências
+npm install
+
+# Configure as variáveis de ambiente
+cp .env.example .env
+
+# Inicialize o banco de dados
+npm run db:init
+
+# Inicie o servidor de desenvolvimento
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🔧 Configuração Cloudflare
+```bash
+# Login no Cloudflare
+wrangler login
 
-## 🚀 Project Structure
+# Criar banco D1
+wrangler d1 create ecommerce_db
 
-Inside of your Astro project, you'll see the following folders and files:
+# Criar KV namespace
+wrangler kv:namespace create "ECOMMERCE_KV"
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+# Criar bucket R2
+wrangler r2 bucket create ecommerce-images
+
+# Executar migrations
+npm run db:migrations
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 📝 Variáveis de Ambiente
+```env
+CLOUDFLARE_ACCOUNT_ID=
+CLOUDFLARE_API_TOKEN=
+CLOUDFLARE_IMAGES_TOKEN=
+CLOUDFLARE_D1_DATABASE_ID=
+CLOUDFLARE_KV_NAMESPACE_ID=
+CLOUDFLARE_R2_BUCKET=
+DATABASE_URL=
+WHATSAPP_PHONE=
+```
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 🚀 Deploy
+```bash
+# Build e deploy
+npm run build
+npm run deploy
 
-Any static assets, like images, can be placed in the `public/` directory.
+# Ou use o script automatizado
+./deploy.sh
+```
 
-## 🧞 Commands
+## 📊 Estrutura do Banco
 
-All commands are run from the root of the project, from a terminal:
+- **products** - Produtos da loja
+- **categories** - Categorias
+- **orders** - Pedidos
+- **reviews** - Avaliações
+- **coupons** - Cupons de desconto
+- **customers** - Clientes cadastrados
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## 🔐 Segurança
 
-## 👀 Want to learn more?
+- Autenticação admin
+- Validação de dados
+- Sanitização de inputs
+- Rate limiting
+- HTTPS obrigatório
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## 📈 Performance
+
+- SSR com Astro
+- Cache em múltiplas camadas
+- Imagens otimizadas
+- Edge computing
+- Bundle size mínimo
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Abra uma issue ou PR.
+
+## 📄 Licença
+
+MIT

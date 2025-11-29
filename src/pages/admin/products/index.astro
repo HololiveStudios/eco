@@ -1,0 +1,84 @@
+---
+// src/pages/admin/products/index.astro
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+---
+
+<AdminLayout title="Produtos">
+  <div class="mb-6 flex justify-between items-center">
+    <div>
+      <input
+        type="text"
+        id="search"
+        placeholder="Buscar produtos..."
+        class="px-4 py-2 border rounded-lg w-64"
+      />
+    </div>
+    
+      href="/admin/products/new"
+      class="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary/90"
+    >
+      + Novo Produto
+    </a>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+    <table class="w-full">
+      <thead class="bg-gray-50 border-b">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Imagem</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Categoria</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Preço</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estoque</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="products-table" class="divide-y">
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    import { getAllAdminProducts, deleteProduct } from '../../../stores/admin-products';
+    import { formatPrice } from '../../../lib/format';
+
+    function renderProducts() {
+      const products = getAllAdminProducts();
+      const tbody = document.getElementById('products-table');
+      
+      if (!tbody) return;
+
+      tbody.innerHTML = products.map(product => `
+        <tr>
+          <td class="px-6 py-4">
+<div class="w-12 h-12 bg-gray-200 rounded">
+<img src="${product.images[0]}" alt="${product.name}" class="w-full h-full object-cover rounded" />
+</div>
+</td>
+<td class="px-6 py-4 font-medium">${product.name}</td>
+<td class="px-6 py-4 text-gray-600">${product.category}</td>
+<td class="px-6 py-4 font-semibold">${formatPrice(product.price)}</td>
+<td class="px-6 py-4">${product.stock}</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 text-xs rounded ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+${product.stock > 0 ? 'Em Estoque' : 'Esgotado'}
+</span>
+</td>
+<td class="px-6 py-4 text-right">
+<a href="/admin/products/edit/${product.id}" class="text-primary hover:underline mr-3">Editar</a>
+<button onclick="handleDelete('${product.id}')" class="text-red-600 hover:underline">Excluir</button>
+</td>
+</tr>
+`).join('');
+}
+(window as any).handleDelete = (id: string) => {
+  if (confirm('Tem certeza que deseja excluir este produto?')) {
+    deleteProduct(id);
+    renderProducts();
+  }
+};
+
+renderProducts();
+  </script>
+</AdminLayout>

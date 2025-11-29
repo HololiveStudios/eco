@@ -1,0 +1,189 @@
+---
+// src/pages/checkout.astro
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Finalizar Compra">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Finalizar Compra</h1>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2">
+        <form id="checkout-form" class="space-y-6">
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h2 class="font-bold text-xl mb-4">Dados Pessoais</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" name="name" placeholder="Nome completo" required class="w-full px-4 py-2 border rounded-lg" />
+              <input type="email" name="email" placeholder="E-mail" required class="w-full px-4 py-2 border rounded-lg" />
+              <input type="tel" name="phone" placeholder="Telefone" required class="w-full px-4 py-2 border rounded-lg" />
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h2 class="font-bold text-xl mb-4">Endereço de Entrega</h2>
+            <div class="grid grid-cols-1 gap-4">
+              <input type="text" name="zipCode" placeholder="CEP" required class="w-full px-4 py-2 border rounded-lg" id="zipCode" />
+              <input type="text" name="street" placeholder="Rua" required class="w-full px-4 py-2 border rounded-lg" id="street" />
+              <div class="grid grid-cols-2 gap-4">
+                <input type="text" name="number" placeholder="Número" required class="px-4 py-2 border rounded-lg" />
+                <input type="text" name="complement" placeholder="Complemento" class="px-4 py-2 border rounded-lg" />
+              </div>
+              <input type="text" name="district" placeholder="Bairro" required class="w-full px-4 py-2 border rounded-lg" id="district" />
+              <div class="grid grid-cols-2 gap-4">
+                <input type="text" name="city" placeholder="Cidade" required class="px-4 py-2 border rounded-lg" id="city" />
+                <input type="text" name="state" placeholder="Estado" required class="px-4 py-2 border rounded-lg" id="state" />
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h2 class="font-bold text-xl mb-4">Forma de Pagamento</h2>
+            <div class="space-y-3">
+              <label class="flex items-center gap-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                <input type="radio" name="payment" value="pix" required />
+                <div class="flex-1">
+                  <span class="font-semibold">PIX</span>
+                  <p class="text-sm text-gray-600">Aprovação imediata</p>
+                </div>
+              </label>
+              <label class="flex items-center gap-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                <input type="radio" name="payment" value="card" required />
+                <div class="flex-1">
+                  <span class="font-semibold">Cartão de Crédito</span>
+                  <p class="text-sm text-gray-600">Parcelamento disponível</p>
+                </div>
+              </label>
+              <label class="flex items-center gap-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                <input type="radio" name="payment" value="boleto" required />
+                <div class="flex-1">
+                  <span class="font-semibold">Boleto</span>
+                  <p class="text-sm text-gray-600">Vencimento em 3 dias</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h2 class="font-bold text-xl mb-4">Observações</h2>
+            <textarea 
+              name="notes" 
+              placeholder="Observações sobre o pedido (opcional)"
+              rows="3"
+              class="w-full px-4 py-2 border rounded-lg"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+
+      <div>
+        <div class="bg-white p-6 rounded-lg shadow-sm sticky top-20">
+          <h2 class="font-bold text-xl mb-4">Resumo do Pedido</h2>
+          <div id="order-summary" class="space-y-3 mb-4"></div>
+          
+          <div class="border-t pt-4 space-y-2">
+            <div class="flex justify-between text-sm">
+              <span>Subtotal:</span>
+              <span id="subtotal">R$ 0,00</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span>Frete:</span>
+              <span id="shipping">R$ 15,00</span>
+            </div>
+            <div class="flex justify-between text-lg font-bold border-t pt-2">
+              <span>Total:</span>
+              <span id="order-total">R$ 0,00</span>
+            </div>
+          </div>
+          
+          <button 
+            form="checkout-form" 
+            type="submit" 
+            class="w-full bg-primary text-white py-3 rounded-lg font-semibold mt-4 hover:bg-primary/90"
+          >
+            Finalizar Pedido
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { cartItems, getCartTotal } from '../stores/cart';
+    import { formatPrice } from '../lib/format';
+
+    const items = Object.values(cartItems.get());
+    const summaryEl = document.getElementById('order-summary');
+    const subtotalEl = document.getElementById('subtotal');
+    const shippingEl = document.getElementById('shipping');
+    const totalEl = document.getElementById('order-total');
+
+    const subtotal = getCartTotal();
+    const shipping = subtotal >= 200 ? 0 : 15;
+    const total = subtotal + shipping;
+
+    if (summaryEl && subtotalEl && shippingEl && totalEl) {
+      summaryEl.innerHTML = items.map(item => `
+        <div class="flex justify-between text-sm">
+          <span>Produto ${item.productId} (${item.quantity}x)</span>
+          <span>${formatPrice(item.price * item.quantity)}</span>
+        </div>
+      `).join('');
+      
+      subtotalEl.textContent = formatPrice(subtotal);
+      shippingEl.textContent = shipping === 0 ? 'GRÁTIS' : formatPrice(shipping);
+      totalEl.textContent = formatPrice(total);
+    }
+
+    // Buscar CEP
+    document.getElementById('zipCode')?.addEventListener('blur', async (e) => {
+      const cep = (e.target as HTMLInputElement).value.replace(/\D/g, '');
+      
+      if (cep.length === 8) {
+        try {
+          const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+          const data = await response.json();
+          
+          if (!data.erro) {
+            (document.getElementById('street') as HTMLInputElement).value = data.logradouro;
+            (document.getElementById('district') as HTMLInputElement).value = data.bairro;
+            (document.getElementById('city') as HTMLInputElement).value = data.localidade;
+            (document.getElementById('state') as HTMLInputElement).value = data.uf;
+          }
+        } catch (error) {
+          console.error('Erro ao buscar CEP:', error);
+        }
+      }
+    });
+
+    document.getElementById('checkout-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target as HTMLFormElement);
+      const orderData = {
+        customer: {
+          name: formData.get('name'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          address: {
+            zipCode: formData.get('zipCode'),
+            street: formData.get('street'),
+            number: formData.get('number'),
+            complement: formData.get('complement'),
+            district: formData.get('district'),
+            city: formData.get('city'),
+            state: formData.get('state')
+          }
+        },
+        payment: formData.get('payment'),
+        notes: formData.get('notes'),
+        items: items,
+        subtotal: subtotal,
+        shipping: shipping,
+        total: total
+      };
+
+      localStorage.setItem('lastOrder', JSON.stringify(orderData));
+      window.location.href = '/order-success';
+    });
+  </script>
+</Layout>
