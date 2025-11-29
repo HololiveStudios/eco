@@ -1,9 +1,187 @@
-/* src/styles/global.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* src/styles/global.css - Tailwind 4 */
 
+@import "tailwindcss";
+
+/* 
+   Se você tiver um tailwind.config.(js|cjs|mjs|ts), a recomendação oficial é:
+   @config "../../tailwind.config.cjs";
+   (ajuste o caminho conforme a raiz do projeto)
+*/
+
+/* BASE LAYER */
 @layer base {
-  * { @apply box-border; }
-  body { @apply antialiased bg-gray-50 text-gray-900; }
+  * {
+    @apply box-border;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply antialiased bg-gray-50 text-gray-900 min-h-screen;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+
+  a {
+    @apply transition-colors;
+  }
+
+  button {
+    @apply transition-all;
+  }
+
+  input, textarea, select {
+    @apply outline-none;
+  }
+
+input:focus,
+textarea:focus,
+select:focus {
+  @apply ring-2 ring-blue-500/40;
+}
+}
+
+/* COMPONENTS LAYER */
+@layer components {
+  .container {
+    @apply mx-auto px-4 max-w-7xl;
+  }
+
+  .btn {
+    @apply px-6 py-2 rounded-lg font-semibold transition-all;
+  }
+
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-700 hover:bg-gray-300;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-sm p-6;
+  }
+
+  .input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg;
+  }
+
+  .badge {
+    @apply px-2 py-1 text-xs rounded-full font-semibold;
+  }
+
+  .badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+
+  .badge-error {
+    @apply bg-red-100 text-red-800;
+  }
+
+  .badge-info {
+    @apply bg-blue-100 text-blue-800;
+  }
+}
+
+/* UTILITIES LAYER */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-spin-slow {
+    animation: spin 3s linear infinite;
+  }
+}
+
+/* ANIMAÇÕES */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  @apply inline-block w-8 h-8 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin;
+}
+
+
+/* Custom Scrollbar 
+   (sem @apply aqui porque Tailwind 4 é mais chato com pseudo-elementos) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f3f4f6; /* equivalente a bg-gray-100 */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #9ca3af; /* equivalente a bg-gray-400 */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280; /* equivalente a bg-gray-500 */
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background-color: #ffffff;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out;
 }

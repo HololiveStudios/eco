@@ -1,23 +1,28 @@
 {
   "name": "ecommerce-base",
-  "type": "module",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "wrangler pages deploy dist",
-    "db:init": "wrangler d1 execute ecommerce_db --file=./schema.sql",
-    "db:migrations": "wrangler d1 migrations apply ecommerce_db"
+    "deploy": "wrangler pages deploy dist --project-name=ecommerce-base"
   },
   "dependencies": {
-    "astro": "^5.0.0",
-    "@astrojs/solid-js": "^4.0.0",
-    "solid-js": "^1.9.3",
+    "astro": "^5.16.2",
+    "@astrojs/cloudflare": "^12.0.0",
+    "@astrojs/solid-js": "^5.0.0",
+    "solid-js": "^1.9.10",
     "@solidjs/router": "^0.15.3",
     "nanostores": "^0.11.3",
-    "@nanostores/persistent": "^0.10.0",
-    "@nanostores/solid": "^0.4.2",
-    "tailwindcss": "^3.4.17"
+    "@nanostores/persistent": "^0.9.1",
+    "@nanostores/solid": "^0.4.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "tailwindcss": "^4.0.0",
+    "postcss": "^8.4.35",
+    "autoprefixer": "^10.4.20",
+    "wrangler": "^4.49.0"
   }
 }
