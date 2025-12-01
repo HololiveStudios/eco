@@ -6,23 +6,29 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "wrangler pages deploy dist --project-name=ecommerce-base"
+    "deploy": "wrangler pages deploy dist --project-name=ecommerce-base",
+    "generate-icons": "bash generate-icons.sh",
+    "generate-vapid": "web-push generate-vapid-keys"
   },
-  "dependencies": {
-    "astro": "^5.16.2",
-    "@astrojs/cloudflare": "^12.0.0",
-    "@astrojs/solid-js": "^5.0.0",
-    "solid-js": "^1.9.10",
-    "@solidjs/router": "^0.15.3",
-    "nanostores": "^0.11.3",
-    "@nanostores/persistent": "^0.9.1",
-    "@nanostores/solid": "^0.4.2"
-  },
+"dependencies": {
+  "astro": "^5.16.2",
+  "@astrojs/cloudflare": "^12.0.0",
+  "@astrojs/solid-js": "^5.0.0",
+  "solid-js": "^1.9.10",
+  "@solidjs/router": "^0.15.3",
+
+  "nanostores": "0.9.5",
+  "@nanostores/persistent": "0.9.1",
+  "@nanostores/solid": "0.4.2",
+
+  "web-push": "^3.6.7"
+},
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
     "tailwindcss": "^4.0.0",
     "postcss": "^8.4.35",
     "autoprefixer": "^10.4.20",
-    "wrangler": "^4.49.0"
+    "wrangler": "^4.49.0",
+    "sharp-cli": "^4.2.0"
   }
 }

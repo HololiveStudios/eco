@@ -30,7 +30,6 @@ const { title, description = "Loja online" } = Astro.props;
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="E-commerce" />
-        <link rel="stylesheet" href="/src/styles/global.css" />
 
         <!-- Icons -->
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -152,10 +151,11 @@ const { title, description = "Loja online" } = Astro.props;
                 ?.addEventListener("click", async () => {
                     const installed = await pwa.promptInstall();
                     if (installed) {
-                        console.log("App instalado!");
+                        console.log("[PWA] App installed successfully");
                     }
                 });
-            // Indicador offline
+
+            // Indicador de offline
             const offlineIndicator =
                 document.getElementById("offline-indicator");
 
@@ -167,7 +167,7 @@ const { title, description = "Loja online" } = Astro.props;
                 offlineIndicator?.classList.add("hidden");
             });
 
-            // Status inicial
+            // Verificar se está offline ao carregar
             if (!pwa.isOnline()) {
                 offlineIndicator?.classList.remove("hidden");
             }
@@ -179,6 +179,11 @@ const { title, description = "Loja online" } = Astro.props;
                 },
                 60 * 60 * 1000,
             ); // A cada hora
+
+            // Log da versão
+            pwa.getVersion().then((version) => {
+                console.log("[PWA] Version:", version);
+            });
         </script>
     </body>
 </html>
